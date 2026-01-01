@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Modern Cookie Clicker - Ultimate Social Edition</title>
+    <title>Cookie Clicker - Secure Edition</title>
     
     <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.1.3/firebase-database-compat.js"></script>
@@ -23,187 +23,109 @@
         }
 
         #game-container {
+            display: none; /* Giriş yapana kadar gizli */
             width: 100vw; height: 100vh;
             background: url('Background.png') no-repeat center center;
             background-size: cover;
             position: relative;
-            display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
         }
 
-        /* ADMIN GLOBAL DUYURU PANELI */
-        #admin-announcement {
-            position: fixed; top: -120px; left: 50%; transform: translateX(-50%);
-            width: 90%; max-width: 500px; background: linear-gradient(135deg, #ff3e3e, #b91d1d);
-            color: white; padding: 18px; border-radius: 20px; text-align: center;
-            font-weight: 600; z-index: 9999; transition: 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            box-shadow: 0 10px 40px rgba(0,0,0,0.6); border: 2px solid rgba(255,255,255,0.4);
-        }
-        #admin-announcement.show { top: 30px; }
-
-        /* ADMIN KONTROL PANELI */
-        #admin-panel {
-            display: none; position: fixed; bottom: 80px; left: 20px;
-            background: rgba(15,15,15,0.98); border: 2px solid #f9d423;
-            padding: 20px; border-radius: 20px; z-index: 3000; width: 300px;
-            color: white; box-shadow: 0 0 30px rgba(249, 212, 35, 0.2);
-            backdrop-filter: blur(15px);
-        }
-        .admin-input { width: 92%; padding: 10px; margin: 5px 0; border-radius: 10px; border: 1px solid #333; background: #000; color: #f9d423; }
-        .admin-btn { width: 100%; padding: 12px; background: #f9d423; color: black; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 5px; }
-
-        #score-board {
-            position: absolute; top: 6%; left: 20px;
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(20px);
-            padding: 12px 30px;
-            border-radius: 100px;
-            color: #ffffff;
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 15px 50px rgba(0,0,0,0.5);
-            z-index: 100;
-            display: flex; align-items: center; gap: 15px;
-        }
-
-        .score-icon { width: 35px; height: 35px; object-fit: contain; }
-        #score-text { font-size: clamp(1.2rem, 5vw, 2rem); font-weight: 600; letter-spacing: 2px; }
-
-        #menu-btn {
-            position: absolute; top: 6%; right: 20px;
-            width: 55px; height: 55px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(15px);
-            border-radius: 15px;
-            display: flex; flex-direction: column;
-            justify-content: center; align-items: center;
-            gap: 6px; cursor: pointer;
-            border: 1px solid rgba(255,255,255,0.3);
-            z-index: 1100;
-        }
-        #menu-btn span { width: 30px; height: 3px; background: white; border-radius: 5px; }
-
-        #social-panel {
-            position: fixed; top: 0; right: -100%;
-            width: 100%; height: 100%;
-            background: rgba(10,10,10,0.98);
-            backdrop-filter: blur(20px);
-            z-index: 2000;
-            transition: 0.6s cubic-bezier(0.77, 0, 0.175, 1);
-            overflow-y: auto;
-            color: white; padding: 40px 20px;
-            box-sizing: border-box;
-        }
-        #social-panel.open { right: 0; }
-
-        .panel-section { margin-bottom: 35px; background: rgba(255,255,255,0.03); padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); }
-        .panel-title { font-size: 24px; font-weight: 600; border-bottom: 3px solid #f9d423; margin-bottom: 20px; padding-bottom: 8px; color: #f9d423; display: flex; justify-content: space-between; }
-
-        #chat-box { height: 180px; background: rgba(0,0,0,0.4); border-radius: 15px; overflow-y: auto; padding: 15px; margin-bottom: 12px; border: 1px solid #333; }
-        .msg { font-size: 14px; margin-bottom: 8px; border-bottom: 1px solid #222; padding-bottom: 5px; }
-        .msg b { color: #4facfe; }
-        #chat-input-area { display: flex; gap: 10px; }
-        #chat-input { flex: 1; padding: 12px; border-radius: 10px; border: none; background: #222; color: white; }
-        #send-btn { padding: 10px 20px; background: #f9d423; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; color: black; }
-
-        .leader-item { display: flex; justify-content: space-between; padding: 12px; background: rgba(255,255,255,0.05); margin-bottom: 8px; border-radius: 10px; }
-        .rank-1 { background: linear-gradient(90deg, #ffd700, #ff8c00); color: black; font-weight: bold; }
-
+        /* LOGIN EKRANI */
         #name-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #121212; z-index: 5000;
+            background: radial-gradient(circle, #1e1e1e 0%, #000 100%);
+            z-index: 9999;
             display: flex; flex-direction: column; justify-content: center; align-items: center;
         }
-        #name-input { padding: 18px; font-size: 20px; border-radius: 15px; border: 2px solid #f9d423; width: 280px; text-align: center; background: #1a1a1a; color: white; }
-        #start-btn { margin-top: 25px; padding: 18px 50px; background: #f9d423; border: none; border-radius: 15px; font-weight: bold; cursor: pointer; }
-
-        #cookie-container { position: relative; width: min(88vw, 360px); height: min(88vw, 360px); display: flex; justify-content: center; align-items: center; cursor: pointer; }
-        #main-cookie { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 30px 60px rgba(0,0,0,0.65)); transition: transform 0.12s; }
-        .controls { position: absolute; bottom: 8%; display: flex; flex-direction: column; gap: 20px; align-items: center; z-index: 200; width: 100%; }
-        .ui-btn { width: clamp(150px, 42vw, 180px); cursor: pointer; transition: 0.4s; border-radius: 30px; }
-        .cooldown { opacity: 0.3; filter: grayscale(1); cursor: not-allowed; pointer-events: none; }
-
-        #store-ui {
-            position: fixed; top: 0; right: -100%; 
-            width: 100%; height: 100%;
-            background: linear-gradient(135deg, rgba(0,0,0,0.85) 0%, rgba(30,30,30,0.95) 100%), url('StoreUI.png');
-            background-size: cover; backdrop-filter: blur(25px); z-index: 1500; transition: right 0.8s cubic-bezier(0.77, 0, 0.175, 1); padding: 40px; color: white;
-            box-sizing: border-box;
+        .login-box {
+            background: rgba(255,255,255,0.05); padding: 40px; border-radius: 25px;
+            border: 1px solid rgba(249, 212, 35, 0.3); text-align: center; width: 300px;
+            backdrop-filter: blur(10px);
         }
-        #store-ui.open { right: 0; }
-        .store-header { font-size: 32px; margin-bottom: 35px; border-bottom: 4px solid rgba(255, 255, 255, 0.15); padding-bottom: 25px; display: flex; justify-content: space-between; font-weight: 600; text-transform: uppercase; }
-        .store-item { background: rgba(255, 255, 255, 0.07); padding: 20px; border-radius: 25px; display: flex; align-items: center; gap: 20px; cursor: pointer; margin-bottom: 22px; transition: 0.3s; }
-        .store-item.disabled { opacity: 0.2; filter: grayscale(1); cursor: not-allowed; }
-        .item-icon { width: 65px; height: 65px; object-fit: contain; }
+        .login-input { 
+            width: 90%; padding: 15px; margin: 10px 0; border-radius: 12px; 
+            border: 1px solid #333; background: #111; color: white; text-align: center;
+        }
+        #start-btn { 
+            margin-top: 20px; padding: 15px 50px; background: #f9d423; 
+            border: none; border-radius: 12px; font-weight: bold; cursor: pointer; width: 100%;
+        }
 
-        .particle { position: absolute; pointer-events: none; animation: crumble 1.5s forwards; }
-        @keyframes crumble { 100% { transform: translate(var(--tx), var(--ty)) rotate(720deg); opacity: 0; } }
-        .fade-out { opacity: 0; transform: scale(0.1) !important; }
-        .shake { animation: biteEffect 0.45s ease-out; }
-        @keyframes biteEffect { 0%, 100% { transform: scale(1); } 25% { transform: scale(0.9) rotate(-6deg); } 50% { transform: scale(1.1) rotate(6deg); } }
+        /* ADMIN PANEL */
+        #admin-panel {
+            display: none; position: fixed; bottom: 80px; left: 20px;
+            background: rgba(10,10,10,0.95); border: 2px solid #f9d423;
+            padding: 20px; border-radius: 20px; z-index: 3000; width: 280px;
+            color: white; box-shadow: 0 0 30px rgba(249, 212, 35, 0.4);
+        }
+        .admin-input { width: 90%; padding: 8px; margin: 5px 0; border-radius: 8px; border: 1px solid #444; background: #000; color: #0f0; }
+        .admin-btn { width: 100%; padding: 10px; background: #f9d423; color: #000; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; margin-top: 5px; }
+
+        /* DIGER STYLES (Ozetlenmis) */
+        #score-board { position: absolute; top: 6%; left: 20px; background: rgba(255,255,255,0.1); padding: 10px 25px; border-radius: 50px; color: white; border: 1px solid rgba(255,255,255,0.2); z-index: 100; display: flex; align-items: center; gap: 10px; }
+        .score-icon { width: 30px; }
+        #main-cookie { width: min(80vw, 320px); transition: transform 0.1s; cursor: pointer; }
+        #menu-btn { position: absolute; top: 6%; right: 20px; width: 50px; height: 50px; background: rgba(255,255,255,0.1); border-radius: 10px; display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 5px; z-index: 1000; }
+        #menu-btn span { width: 25px; height: 3px; background: white; }
+        #social-panel { position: fixed; top: 0; right: -100%; width: 100%; height: 100%; background: #0a0a0ae6; z-index: 2000; transition: 0.5s; color: white; padding: 20px; box-sizing: border-box; overflow-y: auto;}
+        #social-panel.open { right: 0; }
+        .leader-item { display: flex; justify-content: space-between; padding: 10px; background: rgba(255,255,255,0.05); margin: 5px 0; border-radius: 8px; }
+        #chat-box { height: 150px; background: #000; overflow-y: auto; padding: 10px; margin-bottom: 10px; border-radius: 10px; }
+        #admin-announcement { position: fixed; top: -100px; left: 50%; transform: translateX(-50%); width: 80%; background: #ff3e3e; color: white; padding: 15px; border-radius: 15px; text-align: center; z-index: 9999; transition: 0.5s; }
+        #admin-announcement.show { top: 20px; }
     </style>
 </head>
 <body>
 
-    <div id="admin-announcement">Admin: <span>Mesaj yükleniyor...</span></div>
-
-    <div id="admin-panel">
-        <div style="display: flex; justify-content: space-between; align-items: center;">
-            <b style="color:#f9d423; font-size: 14px;">STAFF PANEL</b>
-            <span style="cursor:pointer" onclick="this.parentElement.parentElement.style.display='none'">✕</span>
-        </div>
-        <br>
-        <label>Küresel Duyuru:</label>
-        <input type="text" id="admin-msg-input" class="admin-input" placeholder="Mesaj yaz...">
-        <button class="admin-btn" onclick="sendAdminGlobal()">DUYURU YAP</button>
-        <hr style="border:0.5px solid #333; margin:10px 0;">
-        <label>Oyuncuya Para Ver:</label>
-        <input type="text" id="target-player-name" class="admin-input" placeholder="Oyuncu İsmi...">
-        <input type="number" id="target-player-amount" class="admin-input" placeholder="Miktar (1-10000)...">
-        <button class="admin-btn" style="background:#4facfe" onclick="giveCashToPlayer()">PARA GÖNDER</button>
-    </div>
+    <div id="admin-announcement">Admin: <span>...</span></div>
 
     <div id="name-overlay">
-        <h1 style="color: white; margin-bottom: 10px; letter-spacing: 5px;">COOKIE CLICKER</h1>
-        <p style="color: #888; margin-bottom: 30px;">Kullanılmayan bir isim seçin:</p>
-        <input type="text" id="name-input" placeholder="İsminiz..." maxlength="15">
-        <p id="name-error" style="color: #ff3e3e; font-size: 12px; margin-top: 10px; display: none;">Bu isim zaten alınmış!</p>
-        <button id="start-btn" onclick="startGame()">OYUNA BAŞLA</button>
+        <div class="login-box">
+            <h2 style="color: #f9d423; margin-top: 0;">OYUNCU GİRİŞİ</h2>
+            <input type="text" id="name-input" class="login-input" placeholder="İsim Yaz..." maxlength="15">
+            <input type="password" id="pass-input" class="login-input" placeholder="Şifre Belirle/Gir...">
+            <p id="login-info" style="color: #888; font-size: 11px;">Yeni isim girerseniz şifreniz bu olacaktır.</p>
+            <button id="start-btn" onclick="handleAuth()">OYUNA GİR</button>
+        </div>
+    </div>
+
+    <div id="admin-panel">
+        <b style="color:#f9d423">STAFF PANEL</b>
+        <input type="text" id="admin-msg-input" class="admin-input" placeholder="Global Duyuru...">
+        <button class="admin-btn" onclick="sendAdminGlobal()">YAYINLA</button>
+        <hr style="border:0.5px solid #333; margin:10px 0;">
+        <label style="font-size:12px">OYUNCUYA PARA GÖNDER:</label>
+        <input type="text" id="target-player" class="admin-input" placeholder="Oyuncu Adı...">
+        <input type="number" id="target-amount" class="admin-input" placeholder="Miktar...">
+        <button class="admin-btn" style="background:#4facfe" onclick="giveCashAdmin()">GÖNDER</button>
+        <button class="admin-btn" style="background:#666; color:white" onclick="this.parentElement.style.display='none'">KAPAT</button>
     </div>
 
     <div id="game-container">
-        <div id="menu-btn" onclick="toggleMenu()"><span></span><span></span><span></span></div>
         <div id="score-board"><img src="Cookie.png" class="score-icon"><span id="score-text">0</span></div>
-        <div id="cookie-container"><img src="Cookie.png" id="main-cookie" onclick="processEat()"></div>
-        <div class="controls">
-            <img src="Eat.png" id="eat-btn" class="ui-btn" onclick="processEat()">
-            <img src="Store.png" id="store-btn" class="ui-btn" onclick="toggleStore()">
-        </div>
-
-        <div id="store-ui">
-            <div class="store-header"><span>STORE</span><span style="cursor:pointer; color: #ff3e3e;" onclick="toggleStore()">✕</span></div>
-            <div id="item-autobite" class="store-item disabled" onclick="buyAutoBite()">
-                <img src="Eat.png" class="item-icon">
-                <div><b>Auto Bite</b><br><small>2s bir ısırır</small><br><span style="color:#4facfe">15 🍪</span></div>
-            </div>
-            <div id="item-grandma" class="store-item disabled" onclick="buyGrandma()">
-                <img src="Cookie.png" class="item-icon">
-                <div><b>Grandma</b><br><small>+1 Kurabiye/sn</small><br><span style="color:#f9d423">40 🍪</span></div>
-            </div>
+        <div id="menu-btn" onclick="toggleMenu()"><span></span><span></span><span></span></div>
+        <img src="Cookie.png" id="main-cookie" onclick="processEat()">
+        
+        <div style="position: absolute; bottom: 20px; display: flex; gap: 10px;">
+            <button onclick="toggleStore()" style="padding: 15px 30px; border-radius: 20px; border:none; background: #f9d423; font-weight: bold;">STORE</button>
         </div>
     </div>
 
     <div id="social-panel">
-        <div class="panel-title"><span>SOCIAL</span><span style="cursor:pointer; color: #ff3e3e;" onclick="toggleMenu()">✕</span></div>
-        <div class="panel-section">
-            <div style="font-size: 20px; color: #f9d423; margin-bottom: 15px;">Sıralama</div>
-            <div id="leaderboard-list">Yükleniyor...</div>
+        <h2 onclick="toggleMenu()">✕ GERİ DÖN</h2>
+        <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 15px;">
+            <h3>LİDERLİK TABLOSU</h3>
+            <div id="leaderboard-list"></div>
         </div>
-        <div class="panel-section">
-            <div style="font-size: 20px; color: #f9d423; margin-bottom: 15px;">Global Sohbet</div>
+        <br>
+        <div style="background: rgba(255,255,255,0.05); padding: 15px; border-radius: 15px;">
+            <h3>GLOBAL SOHBET</h3>
             <div id="chat-box"></div>
-            <div id="chat-input-area"><input type="text" id="chat-input" placeholder="Mesajınız..."><button id="send-btn" onclick="sendMessage()">Gönder</button></div>
+            <input type="text" id="chat-input" placeholder="Mesaj..." style="width: 70%; padding: 10px; border-radius: 5px;">
+            <button onclick="sendMessage()" style="padding: 10px; background: #f9d423; border:none; border-radius: 5px;">GÖNDER</button>
         </div>
     </div>
 
@@ -221,208 +143,136 @@
     firebase.initializeApp(firebaseConfig);
     const database = firebase.database();
 
-    let playerName = localStorage.getItem('player_name') || "";
-    let score = parseInt(localStorage.getItem('cookie_score')) || 0;
+    let playerName = "";
+    let score = 0;
     let biteStage = 0;
-    let isTransitioning = false;
     let isCooldown = false;
-    let grandmaCount = parseInt(localStorage.getItem('grandma_count')) || 0;
-    let hasAutoBite = localStorage.getItem('has_autobite') === 'true';
-    let scoreMult = parseInt(localStorage.getItem('score_mult')) || 1;
 
-    const mainImg = document.getElementById('main-cookie');
-    const scoreVal = document.getElementById('score-text');
-    const cookieStages = ['Cookie.png', 'BittenCookie.png', 'MoreBittenCookie.png', 'VeryBittenCookie.png'];
+    // GİRİŞ VE ŞİFRE KONTROLÜ
+    async function handleAuth() {
+        const nameInput = document.getElementById('name-input').value.trim();
+        const passInput = document.getElementById('pass-input').value.trim();
+        const info = document.getElementById('login-info');
 
-    window.onload = function() {
-        if(playerName) {
-            document.getElementById('name-overlay').style.display = 'none';
-            checkAdminPrivileges();
-            initSocial();
-            listenToMyScore(); // Kendi puanini dinle (Admin para gonderdiginde degismesi icin)
+        if(nameInput.length < 3 || passInput.length < 3) {
+            alert("İsim ve Şifre en az 3 karakter olmalı!");
+            return;
         }
-    };
 
-    // YENI OYUNCU GIRISI VE ISIM KONTROLU
-    async function startGame() {
-        const input = document.getElementById('name-input').value.trim();
-        const errorMsg = document.getElementById('name-error');
-        
-        if(input === "") { alert("Lütfen bir isim yazın!"); return; }
+        const userRef = database.ref('users/' + nameInput);
+        const snapshot = await userRef.get();
 
-        // Firebase'de bu isim var mi kontrol et
-        const snapshot = await database.ref('leaderboard/' + input).get();
-        
         if(snapshot.exists()) {
-            // Isim alinmis, hata goster
-            errorMsg.style.display = 'block';
-            errorMsg.innerText = "Bu isim zaten başka bir oyuncu tarafından alınmış!";
+            // Kullanıcı var, şifre kontrolü yap
+            if(snapshot.val().password === passInput) {
+                loginSuccess(nameInput);
+            } else {
+                info.style.color = "#ff3e3e";
+                info.innerText = "HATA: Bu isim alınmış ve şifre yanlış!";
+            }
         } else {
-            // Isim musait, kaydet ve basla
-            playerName = input;
-            localStorage.setItem('player_name', playerName);
-            document.getElementById('name-overlay').style.display = 'none';
-            
-            // Ilk kaydı yap
-            database.ref('leaderboard/' + playerName).set({ score: 0 });
-            
-            checkAdminPrivileges();
-            initSocial();
-            listenToMyScore();
+            // Yeni kullanıcı oluştur
+            await userRef.set({
+                password: passInput,
+                score: 0
+            });
+            loginSuccess(nameInput);
         }
     }
 
-    // ADMIN KONTROLU
-    function checkAdminPrivileges() {
-        if(playerName.toLowerCase() === "ibrahim deve" || playerName === "İbrahim Deve") {
+    function loginSuccess(name) {
+        playerName = name;
+        document.getElementById('name-overlay').style.display = 'none';
+        document.getElementById('game-container').style.display = 'flex';
+        
+        // Verileri Dinle
+        database.ref('users/' + playerName + '/score').on('value', snap => {
+            score = snap.val() || 0;
+            document.getElementById('score-text').innerText = score;
+        });
+
+        if(playerName.toLowerCase() === "ibrahim deve") {
             document.getElementById('admin-panel').style.display = 'block';
         }
+
+        initSocial();
     }
 
-    // ADMIN: OYUNCUYA PARA GONDERME
-    function giveCashToPlayer() {
-        const targetName = document.getElementById('target-player-name').value.trim();
-        let amount = parseInt(document.getElementById('target-player-amount').value);
+    // ADMIN: PARA GÖNDERME
+    function giveCashAdmin() {
+        const target = document.getElementById('target-player').value.trim();
+        const amount = parseInt(document.getElementById('target-amount').value);
+        
+        if(!target || isNaN(amount)) return;
 
-        if(!targetName || isNaN(amount)) { alert("Geçerli isim ve miktar girin!"); return; }
-        if(amount > 1000000) amount = 1000000; // 1 milyon sınırı
-
-        database.ref('leaderboard/' + targetName).get().then((snapshot) => {
-            if (snapshot.exists()) {
-                const currentScore = snapshot.val().score || 0;
-                database.ref('leaderboard/' + targetName).update({
-                    score: currentScore + amount
-                });
-                alert(targetName + " isimli oyuncuya " + amount + " para gönderildi!");
-            } else {
-                alert("Böyle bir oyuncu bulunamadı!");
-            }
-        });
-    }
-
-    // Kendi puanini veritabanindan dinle (Disaridan mudahale edildiginde senkronize olmasi icin)
-    function listenToMyScore() {
-        database.ref('leaderboard/' + playerName + '/score').on('value', snap => {
+        database.ref('users/' + target).get().then(snap => {
             if(snap.exists()) {
-                score = snap.val();
-                localStorage.setItem('cookie_score', score);
-                updateUI();
+                const newScore = (snap.val().score || 0) + amount;
+                database.ref('users/' + target).update({ score: newScore });
+                alert(target + " oyuncusuna " + amount + " gönderildi!");
+            } else {
+                alert("Oyuncu bulunamadı!");
             }
         });
-    }
-
-    function initSocial() {
-        updateUI();
-        if(grandmaCount > 0) startGrandmaLoop();
-        if(hasAutoBite) startAutoBiteLoop();
-        syncLeaderboard();
-        listenMessages();
-        listenAdminMessages();
-    }
-
-    function sendAdminGlobal() {
-        const msg = document.getElementById('admin-msg-input').value.trim();
-        if(!msg) return;
-        database.ref('admin_announcement').set({ text: msg, time: Date.now() });
-        document.getElementById('admin-msg-input').value = "";
-    }
-
-    function listenAdminMessages() {
-        database.ref('admin_announcement').on('value', snap => {
-            const data = snap.val();
-            if(!data) return;
-            const banner = document.getElementById('admin-announcement');
-            banner.querySelector('span').innerText = data.text;
-            banner.classList.add('show');
-            setTimeout(() => banner.classList.remove('show'), 7000); 
-        });
-    }
-
-    function addPoints(val) {
-        score += val;
-        updateUI();
-        database.ref('leaderboard/' + playerName).set({ score: score });
     }
 
     function processEat() {
-        if (isTransitioning || isCooldown) return;
+        if(isCooldown) return;
         isCooldown = true;
-        const btn = document.getElementById('eat-btn');
-        btn.classList.add('cooldown');
-        setTimeout(() => { isCooldown = false; btn.classList.remove('cooldown'); }, 2000);
+        setTimeout(() => isCooldown = false, 500);
 
         biteStage++;
-        mainImg.classList.add('shake');
-        createCrumbs(1, 40, 40);
-
-        if (biteStage < 4) {
-            mainImg.src = cookieStages[biteStage];
-        } else {
-            isTransitioning = true;
-            addPoints(1 * scoreMult);
-            mainImg.classList.add('fade-out');
-            setTimeout(() => {
-                biteStage = 0;
-                mainImg.src = cookieStages[0];
-                mainImg.classList.remove('fade-out', 'shake');
-                isTransitioning = false;
-            }, 600);
+        if(biteStage >= 4) {
+            biteStage = 0;
+            database.ref('users/' + playerName).update({ score: score + 1 });
         }
+        document.getElementById('main-cookie').style.transform = "scale(0.9)";
+        setTimeout(() => document.getElementById('main-cookie').style.transform = "scale(1)", 100);
     }
 
-    function updateUI() {
-        scoreVal.innerText = score;
-        document.getElementById('item-autobite').classList.toggle('disabled', score < 15);
-        document.getElementById('item-grandma').classList.toggle('disabled', score < 40);
+    function sendAdminGlobal() {
+        const msg = document.getElementById('admin-msg-input').value;
+        database.ref('admin_msg').set({ text: msg, time: Date.now() });
     }
 
-    function buyAutoBite() {
-        if (score >= 15 && !hasAutoBite) { 
-            addPoints(-15); hasAutoBite = true; 
-            localStorage.setItem('has_autobite', 'true'); 
-            startAutoBiteLoop(); updateUI();
-        }
-    }
-    function startAutoBiteLoop() { setInterval(() => { if(!isTransitioning && !isCooldown) processEat(); }, 2000); }
-    function buyGrandma() { if (score >= 40) { addPoints(-40); grandmaCount++; localStorage.setItem('grandma_count', grandmaCount); if(grandmaCount === 1) startGrandmaLoop(); } }
-    function startGrandmaLoop() { setInterval(() => addPoints(grandmaCount), 1000); }
+    function initSocial() {
+        // Liderlik Tablosu
+        database.ref('users').orderByChild('score').limitToLast(10).on('value', snap => {
+            const list = document.getElementById('leaderboard-list');
+            list.innerHTML = "";
+            let items = [];
+            snap.forEach(c => { items.push({n: c.key, s: c.val().score}); });
+            items.reverse().forEach((p, i) => {
+                list.innerHTML += `<div class="leader-item">#${i+1} ${p.n} <span>${p.s} 🍪</span></div>`;
+            });
+        });
 
-    function toggleMenu() { document.getElementById('social-panel').classList.toggle('open'); }
-    function toggleStore() { document.getElementById('store-ui').classList.toggle('open'); }
-
-    function sendMessage() {
-        const input = document.getElementById('chat-input');
-        if(!input.value.trim()) return;
-        database.ref('messages').push({ name: playerName, text: input.value, time: Date.now() });
-        input.value = "";
-    }
-
-    function listenMessages() {
-        database.ref('messages').limitToLast(15).on('value', snap => {
+        // Chat
+        database.ref('messages').limitToLast(10).on('value', snap => {
             const box = document.getElementById('chat-box'); box.innerHTML = "";
-            snap.forEach(child => { const d = child.val(); box.innerHTML += `<div class="msg"><b>${d.name}:</b> ${d.text}</div>`; });
+            snap.forEach(c => { box.innerHTML += `<div><b>${c.val().n}:</b> ${c.val().t}</div>`; });
             box.scrollTop = box.scrollHeight;
         });
-    }
 
-    function syncLeaderboard() {
-        database.ref('leaderboard').orderByChild('score').limitToLast(10).on('value', snap => {
-            const list = document.getElementById('leaderboard-list'); list.innerHTML = "";
-            let arr = []; snap.forEach(c => { arr.push({ n: c.key, s: c.val().score }); });
-            arr.reverse().forEach((p, i) => { list.innerHTML += `<div class="leader-item ${i===0?'rank-1':''}"><span>#${i+1} ${p.n}</span> <span>${p.s} 🍪</span></div>`; });
+        // Admin Duyuruları
+        database.ref('admin_msg').on('value', snap => {
+            if(!snap.val()) return;
+            const b = document.getElementById('admin-announcement');
+            b.querySelector('span').innerText = snap.val().text;
+            b.classList.add('show');
+            setTimeout(() => b.classList.remove('show'), 5000);
         });
     }
 
-    function createCrumbs(num, rx, ry) {
-        for (let i = 0; i < num; i++) {
-            const p = document.createElement('div'); p.className = 'particle';
-            p.style.width = '10px'; p.style.height = '10px'; p.style.background = '#8B4513';
-            p.style.left = '50%'; p.style.top = '50%';
-            p.style.setProperty('--tx', (Math.random()-0.5)*rx*2 + 'px');
-            p.style.setProperty('--ty', (Math.random())*ry + 'px');
-            document.body.appendChild(p); setTimeout(() => p.remove(), 1500);
-        }
+    function sendMessage() {
+        const t = document.getElementById('chat-input').value;
+        if(!t) return;
+        database.ref('messages').push({ n: playerName, t: t });
+        document.getElementById('chat-input').value = "";
     }
+
+    function toggleMenu() { document.getElementById('social-panel').classList.toggle('open'); }
+    function toggleStore() { alert("Store yakında!"); }
 </script>
 </body>
 </html>
