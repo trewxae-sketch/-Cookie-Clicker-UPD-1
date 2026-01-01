@@ -43,17 +43,16 @@
         }
         #admin-announcement.show { top: 30px; }
 
-        /* ADMIN KONTROL PANELI (SOL ALT) */
+        /* ADMIN KONTROL PANELI */
         #admin-panel {
-            display: none; position: fixed; bottom: 100px; left: 20px;
-            background: rgba(15,15,15,0.95); border: 2px solid #f9d423;
-            padding: 20px; border-radius: 20px; z-index: 3000; width: 280px;
+            display: none; position: fixed; bottom: 80px; left: 20px;
+            background: rgba(15,15,15,0.98); border: 2px solid #f9d423;
+            padding: 20px; border-radius: 20px; z-index: 3000; width: 300px;
             color: white; box-shadow: 0 0 30px rgba(249, 212, 35, 0.2);
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(15px);
         }
-        .admin-input { width: 90%; padding: 12px; margin: 8px 0; border-radius: 10px; border: 1px solid #333; background: #000; color: #00ff00; font-family: monospace; }
-        .admin-btn { width: 100%; padding: 12px; background: #f9d423; color: black; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 5px; transition: 0.2s; }
-        .admin-btn:active { transform: scale(0.95); }
+        .admin-input { width: 92%; padding: 10px; margin: 5px 0; border-radius: 10px; border: 1px solid #333; background: #000; color: #f9d423; }
+        .admin-btn { width: 100%; padding: 12px; background: #f9d423; color: black; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; margin-top: 5px; }
 
         #score-board {
             position: absolute; top: 6%; left: 20px;
@@ -151,50 +150,26 @@
 
     <div id="admin-panel">
         <div style="display: flex; justify-content: space-between; align-items: center;">
-            <b style="color:#f9d423; font-size: 14px;">STAFF: İbrahim Deve</b>
+            <b style="color:#f9d423; font-size: 14px;">STAFF PANEL</b>
             <span style="cursor:pointer" onclick="this.parentElement.parentElement.style.display='none'">✕</span>
         </div>
         <br>
         <label>Küresel Duyuru:</label>
-        <input type="text" id="admin-msg-input" class="admin-input" placeholder="Tüm oyunculara mesaj...">
-        <button class="admin-btn" onclick="sendAdminGlobal()">DUYURUYU YAYINLA</button>
-        
-        <hr style="border:0.5px solid #222; margin:15px 0;">
-        
-        <label>Cookie Coin Ekle (Max 10k):</label>
-        <input type="number" id="admin-coin-input" class="admin-input" placeholder="Miktar gir...">
-        <button class="admin-btn" onclick="addAdminCoins()">HESABIMA EKLE</button>
+        <input type="text" id="admin-msg-input" class="admin-input" placeholder="Mesaj yaz...">
+        <button class="admin-btn" onclick="sendAdminGlobal()">DUYURU YAP</button>
+        <hr style="border:0.5px solid #333; margin:10px 0;">
+        <label>Oyuncuya Para Ver:</label>
+        <input type="text" id="target-player-name" class="admin-input" placeholder="Oyuncu İsmi...">
+        <input type="number" id="target-player-amount" class="admin-input" placeholder="Miktar (1-10000)...">
+        <button class="admin-btn" style="background:#4facfe" onclick="giveCashToPlayer()">PARA GÖNDER</button>
     </div>
 
     <div id="name-overlay">
-        <h1 style="color: white; margin-bottom: 10px;">COOKIE CLICKER</h1>
-        <p style="color: #666; margin-bottom: 30px;">Lütfen isminizi giriniz:</p>
+        <h1 style="color: white; margin-bottom: 10px; letter-spacing: 5px;">COOKIE CLICKER</h1>
+        <p style="color: #888; margin-bottom: 30px;">Kullanılmayan bir isim seçin:</p>
         <input type="text" id="name-input" placeholder="İsminiz..." maxlength="15">
+        <p id="name-error" style="color: #ff3e3e; font-size: 12px; margin-top: 10px; display: none;">Bu isim zaten alınmış!</p>
         <button id="start-btn" onclick="startGame()">OYUNA BAŞLA</button>
-    </div>
-
-    <div id="social-panel">
-        <div class="panel-title"><span>MENU</span><span style="cursor:pointer; color: #ff3e3e;" onclick="toggleMenu()">✕</span></div>
-        <div class="panel-section">
-            <div style="font-size: 20px; color: #f9d423; margin-bottom: 15px;">Settings</div>
-            <p>Music: <input type="checkbox" checked></p>
-            <p>Vibration: <input type="checkbox" checked></p>
-        </div>
-        <div class="panel-section">
-            <div style="font-size: 20px; color: #f9d423; margin-bottom: 15px;">Leaderboard</div>
-            <div id="leaderboard-list">Loading...</div>
-        </div>
-        <div class="panel-section">
-            <div style="font-size: 20px; color: #f9d423; margin-bottom: 15px;">Global Chat</div>
-            <div id="chat-box"></div>
-            <div id="chat-input-area"><input type="text" id="chat-input" placeholder="Mesajınız..."><button id="send-btn" onclick="sendMessage()">Gönder</button></div>
-        </div>
-        <div class="panel-section">
-            <div style="font-size: 20px; color: #f9d423; margin-bottom: 15px;">Credits</div>
-            <p><b>Creator:</b> İbrahim Yiğit</p>
-            <p><b>Helper:</b> HupiDev</p>
-            <p><b>Published:</b> January 2026</p>
-        </div>
     </div>
 
     <div id="game-container">
@@ -210,16 +185,25 @@
             <div class="store-header"><span>STORE</span><span style="cursor:pointer; color: #ff3e3e;" onclick="toggleStore()">✕</span></div>
             <div id="item-autobite" class="store-item disabled" onclick="buyAutoBite()">
                 <img src="Eat.png" class="item-icon">
-                <div><b>Auto Bite</b><br><small>2 saniyede bir ısırır</small><br><span style="color:#4facfe">15 🍪</span></div>
+                <div><b>Auto Bite</b><br><small>2s bir ısırır</small><br><span style="color:#4facfe">15 🍪</span></div>
             </div>
             <div id="item-grandma" class="store-item disabled" onclick="buyGrandma()">
                 <img src="Cookie.png" class="item-icon">
-                <div><b>Grandma</b><br><small>Saniyede +1 Kurabiye</small><br><span style="color:#f9d423">40 🍪</span></div>
+                <div><b>Grandma</b><br><small>+1 Kurabiye/sn</small><br><span style="color:#f9d423">40 🍪</span></div>
             </div>
-            <div id="item-multiplier" class="store-item disabled" onclick="buyMultiplier()">
-                <img src="Store.png" class="item-icon">
-                <div><b>Mega Bite</b><br><small>Kazancı x2 yapar</small><br><span style="color:#ff0844">100 🍪</span></div>
-            </div>
+        </div>
+    </div>
+
+    <div id="social-panel">
+        <div class="panel-title"><span>SOCIAL</span><span style="cursor:pointer; color: #ff3e3e;" onclick="toggleMenu()">✕</span></div>
+        <div class="panel-section">
+            <div style="font-size: 20px; color: #f9d423; margin-bottom: 15px;">Sıralama</div>
+            <div id="leaderboard-list">Yükleniyor...</div>
+        </div>
+        <div class="panel-section">
+            <div style="font-size: 20px; color: #f9d423; margin-bottom: 15px;">Global Sohbet</div>
+            <div id="chat-box"></div>
+            <div id="chat-input-area"><input type="text" id="chat-input" placeholder="Mesajınız..."><button id="send-btn" onclick="sendMessage()">Gönder</button></div>
         </div>
     </div>
 
@@ -250,32 +234,81 @@
     const scoreVal = document.getElementById('score-text');
     const cookieStages = ['Cookie.png', 'BittenCookie.png', 'MoreBittenCookie.png', 'VeryBittenCookie.png'];
 
-    // Sayfa açıldığında ismi kontrol et
     window.onload = function() {
         if(playerName) {
             document.getElementById('name-overlay').style.display = 'none';
             checkAdminPrivileges();
             initSocial();
+            listenToMyScore(); // Kendi puanini dinle (Admin para gonderdiginde degismesi icin)
         }
     };
 
-    function startGame() {
+    // YENI OYUNCU GIRISI VE ISIM KONTROLU
+    async function startGame() {
         const input = document.getElementById('name-input').value.trim();
+        const errorMsg = document.getElementById('name-error');
+        
         if(input === "") { alert("Lütfen bir isim yazın!"); return; }
-        playerName = input;
-        localStorage.setItem('player_name', playerName);
-        document.getElementById('name-overlay').style.display = 'none';
-        checkAdminPrivileges();
-        initSocial();
+
+        // Firebase'de bu isim var mi kontrol et
+        const snapshot = await database.ref('leaderboard/' + input).get();
+        
+        if(snapshot.exists()) {
+            // Isim alinmis, hata goster
+            errorMsg.style.display = 'block';
+            errorMsg.innerText = "Bu isim zaten başka bir oyuncu tarafından alınmış!";
+        } else {
+            // Isim musait, kaydet ve basla
+            playerName = input;
+            localStorage.setItem('player_name', playerName);
+            document.getElementById('name-overlay').style.display = 'none';
+            
+            // Ilk kaydı yap
+            database.ref('leaderboard/' + playerName).set({ score: 0 });
+            
+            checkAdminPrivileges();
+            initSocial();
+            listenToMyScore();
+        }
     }
 
-    // ADMIN KONTROLÜ (KESİN ÇÖZÜM)
+    // ADMIN KONTROLU
     function checkAdminPrivileges() {
-        // İsimdeki büyük küçük harf ve boşluk duyarlılığını ortadan kaldırdık
         if(playerName.toLowerCase() === "ibrahim deve" || playerName === "İbrahim Deve") {
-            console.log("Admin Yetkisi Onaylandı: İbrahim Deve");
             document.getElementById('admin-panel').style.display = 'block';
         }
+    }
+
+    // ADMIN: OYUNCUYA PARA GONDERME
+    function giveCashToPlayer() {
+        const targetName = document.getElementById('target-player-name').value.trim();
+        let amount = parseInt(document.getElementById('target-player-amount').value);
+
+        if(!targetName || isNaN(amount)) { alert("Geçerli isim ve miktar girin!"); return; }
+        if(amount > 1000000) amount = 1000000; // 1 milyon sınırı
+
+        database.ref('leaderboard/' + targetName).get().then((snapshot) => {
+            if (snapshot.exists()) {
+                const currentScore = snapshot.val().score || 0;
+                database.ref('leaderboard/' + targetName).update({
+                    score: currentScore + amount
+                });
+                alert(targetName + " isimli oyuncuya " + amount + " para gönderildi!");
+            } else {
+                alert("Böyle bir oyuncu bulunamadı!");
+            }
+        });
+    }
+
+    // Kendi puanini veritabanindan dinle (Disaridan mudahale edildiginde senkronize olmasi icin)
+    function listenToMyScore() {
+        database.ref('leaderboard/' + playerName + '/score').on('value', snap => {
+            if(snap.exists()) {
+                score = snap.val();
+                localStorage.setItem('cookie_score', score);
+                updateUI();
+            }
+        });
     }
 
     function initSocial() {
@@ -287,18 +320,13 @@
         listenAdminMessages();
     }
 
-    // GLOBAL MESAJ GÖNDER (ADMIN)
     function sendAdminGlobal() {
         const msg = document.getElementById('admin-msg-input').value.trim();
         if(!msg) return;
-        database.ref('admin_announcement').set({
-            text: msg,
-            time: Date.now()
-        });
+        database.ref('admin_announcement').set({ text: msg, time: Date.now() });
         document.getElementById('admin-msg-input').value = "";
     }
 
-    // GLOBAL MESAJI DİNLE (TÜM OYUNCULAR)
     function listenAdminMessages() {
         database.ref('admin_announcement').on('value', snap => {
             const data = snap.val();
@@ -310,14 +338,10 @@
         });
     }
 
-    // COIN EKLE (ADMIN)
-    function addAdminCoins() {
-        let amount = parseInt(document.getElementById('admin-coin-input').value);
-        if(isNaN(amount) || amount < 1) return;
-        if(amount > 10000) amount = 10000;
-        addPoints(amount);
-        document.getElementById('admin-coin-input').value = "";
-        alert(amount + " kurabiye eklendi!");
+    function addPoints(val) {
+        score += val;
+        updateUI();
+        database.ref('leaderboard/' + playerName).set({ score: score });
     }
 
     function processEat() {
@@ -328,8 +352,6 @@
         setTimeout(() => { isCooldown = false; btn.classList.remove('cooldown'); }, 2000);
 
         biteStage++;
-        mainImg.classList.remove('shake');
-        void mainImg.offsetWidth;
         mainImg.classList.add('shake');
         createCrumbs(1, 40, 40);
 
@@ -339,7 +361,6 @@
             isTransitioning = true;
             addPoints(1 * scoreMult);
             mainImg.classList.add('fade-out');
-            createCrumbs(20, 180, 350);
             setTimeout(() => {
                 biteStage = 0;
                 mainImg.src = cookieStages[0];
@@ -349,19 +370,10 @@
         }
     }
 
-    function addPoints(val) {
-        score += val;
-        updateUI();
-        localStorage.setItem('cookie_score', score);
-        database.ref('leaderboard/' + playerName).set({ score: score });
-    }
-
     function updateUI() {
         scoreVal.innerText = score;
-        document.getElementById('item-autobite').classList.toggle('disabled', score < 15 || hasAutoBite);
+        document.getElementById('item-autobite').classList.toggle('disabled', score < 15);
         document.getElementById('item-grandma').classList.toggle('disabled', score < 40);
-        document.getElementById('item-multiplier').classList.toggle('disabled', score < 100);
-        if(hasAutoBite) document.getElementById('item-autobite').style.display = 'none';
     }
 
     function buyAutoBite() {
@@ -372,8 +384,6 @@
         }
     }
     function startAutoBiteLoop() { setInterval(() => { if(!isTransitioning && !isCooldown) processEat(); }, 2000); }
-
-    function buyMultiplier() { if (score >= 100) { addPoints(-100); scoreMult = 2; localStorage.setItem('score_mult', 2); updateUI(); } }
     function buyGrandma() { if (score >= 40) { addPoints(-40); grandmaCount++; localStorage.setItem('grandma_count', grandmaCount); if(grandmaCount === 1) startGrandmaLoop(); } }
     function startGrandmaLoop() { setInterval(() => addPoints(grandmaCount), 1000); }
 
