@@ -33,6 +33,26 @@
             align-items: center;
         }
 
+        /* Admin Global Duyuru Stili */
+        #admin-announcement {
+            position: fixed; top: -100px; left: 50%; transform: translateX(-50%);
+            width: 90%; max-width: 500px; background: rgba(255, 62, 62, 0.9);
+            color: white; padding: 15px; border-radius: 15px; text-align: center;
+            font-weight: bold; z-index: 9999; transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); border: 2px solid white;
+        }
+        #admin-announcement.show { top: 20px; }
+
+        /* Admin Panel Butonu ve Penceresi */
+        #admin-panel {
+            display: none; position: fixed; bottom: 20px; left: 20px;
+            background: rgba(0,0,0,0.9); border: 2px solid #f9d423;
+            padding: 15px; border-radius: 15px; z-index: 3000; width: 250px;
+            color: white; font-size: 12px;
+        }
+        .admin-input { width: 90%; padding: 8px; margin: 5px 0; border-radius: 5px; border: none; background: #222; color: white; }
+        .admin-btn { width: 100%; padding: 8px; background: #f9d423; color: black; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; margin-top: 5px; }
+
         #score-board {
             position: absolute; top: 6%; left: 20px;
             background: rgba(255, 255, 255, 0.12);
@@ -125,6 +145,19 @@
 </head>
 <body>
 
+    <div id="admin-announcement">Admin: <span></span></div>
+
+    <div id="admin-panel">
+        <b style="color:#f9d423">IBRAHIM DEVE - ADMIN PANEL</b><br><br>
+        Global Message:<br>
+        <input type="text" id="admin-msg-input" class="admin-input" placeholder="Duyuru yaz...">
+        <button class="admin-btn" onclick="sendAdminGlobal()">Duyuruyu Gönder</button>
+        <hr style="border:0.5px solid #333; margin:10px 0;">
+        Add Cookie Coins (1-10000):<br>
+        <input type="number" id="admin-coin-input" class="admin-input" placeholder="Miktar...">
+        <button class="admin-btn" onclick="addAdminCoins()">Coin Ekle</button>
+    </div>
+
     <div id="name-overlay">
         <h1 style="color: white; margin-bottom: 10px;">COOKIE CLICKER</h1>
         <p style="color: #666; margin-bottom: 30px;">Please enter your name:</p>
@@ -209,11 +242,14 @@
     const scoreVal = document.getElementById('score-text');
     const cookieStages = ['Cookie.png', 'BittenCookie.png', 'MoreBittenCookie.png', 'VeryBittenCookie.png'];
 
-    if(playerName) { document.getElementById('name-overlay').style.display = 'none'; initSocial(); }
+    if(playerName) { 
+        document.getElementById('name-overlay').style.display = 'none'; 
+        checkAdmin();
+        initSocial(); 
+    }
 
     function startGame() {
         const input = document.getElementById('name-input').value.trim();
-        // Hata buradaydı, kontrolü tamamen esnettim. 
         if(input === "") {
             alert("Lütfen bir isim yazın!");
             return;
@@ -221,7 +257,15 @@
         playerName = input;
         localStorage.setItem('player_name', playerName);
         document.getElementById('name-overlay').style.display = 'none';
+        checkAdmin();
         initSocial();
+    }
+
+    // Admin Kontrol Fonksiyonu
+    function checkAdmin() {
+        if(playerName === "İbrahim Deve") {
+            document.getElementById('admin-panel').style.display = 'block';
+        }
     }
 
     function initSocial() {
@@ -230,6 +274,39 @@
         if(hasAutoBite) startAutoBiteLoop();
         syncLeaderboard();
         listenMessages();
+        listenAdminMessages(); // Admin duyurularını dinle
+    }
+
+    // Admin Global Mesaj Gönderme
+    function sendAdminGlobal() {
+        const msg = document.getElementById('admin-msg-input').value;
+        if(!msg) return;
+        database.ref('admin_announcement').set({
+            text: msg,
+            time: Date.now()
+        });
+        document.getElementById('admin-msg-input').value = "";
+    }
+
+    // Admin Mesajını Tüm Oyuncularda Dinleme
+    function listenAdminMessages() {
+        database.ref('admin_announcement').on('value', snap => {
+            const data = snap.val();
+            if(!data) return;
+            const banner = document.getElementById('admin-announcement');
+            banner.querySelector('span').innerText = data.text;
+            banner.classList.add('show');
+            setTimeout(() => banner.classList.remove('show'), 5000); // 5 saniye sonra gizle
+        });
+    }
+
+    // Admin Coin Ekleme
+    function addAdminCoins() {
+        let amount = parseInt(document.getElementById('admin-coin-input').value);
+        if(isNaN(amount) || amount < 1) return;
+        if(amount > 10000) amount = 10000;
+        addPoints(amount);
+        document.getElementById('admin-coin-input').value = "";
     }
 
     function processEat() {
