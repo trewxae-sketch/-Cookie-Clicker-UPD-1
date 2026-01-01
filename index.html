@@ -11,7 +11,6 @@
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap');
 
-        /* General Layout */
         body, html {
             margin: 0; padding: 0;
             width: 100%; height: 100%;
@@ -23,7 +22,6 @@
             user-select: none;
         }
 
-        /* Game Scene */
         #game-container {
             width: 100vw; height: 100vh;
             background: url('Background.png') no-repeat center center;
@@ -35,7 +33,6 @@
             align-items: center;
         }
 
-        /* Score Board */
         #score-board {
             position: absolute; top: 6%; left: 20px;
             background: rgba(255, 255, 255, 0.12);
@@ -52,7 +49,6 @@
         .score-icon { width: 35px; height: 35px; object-fit: contain; }
         #score-text { font-size: clamp(1.2rem, 5vw, 2rem); font-weight: 600; letter-spacing: 2px; }
 
-        /* Menu Button */
         #menu-btn {
             position: absolute; top: 6%; right: 20px;
             width: 55px; height: 55px;
@@ -64,11 +60,9 @@
             gap: 6px; cursor: pointer;
             border: 1px solid rgba(255,255,255,0.3);
             z-index: 1100;
-            transition: 0.3s;
         }
         #menu-btn span { width: 30px; height: 3px; background: white; border-radius: 5px; }
 
-        /* Social Panel */
         #social-panel {
             position: fixed; top: 0; right: -100%;
             width: 100%; height: 100%;
@@ -85,7 +79,6 @@
         .panel-section { margin-bottom: 35px; background: rgba(255,255,255,0.03); padding: 20px; border-radius: 20px; border: 1px solid rgba(255,255,255,0.05); }
         .panel-title { font-size: 24px; font-weight: 600; border-bottom: 3px solid #f9d423; margin-bottom: 20px; padding-bottom: 8px; color: #f9d423; display: flex; justify-content: space-between; }
 
-        /* Chat */
         #chat-box { height: 180px; background: rgba(0,0,0,0.4); border-radius: 15px; overflow-y: auto; padding: 15px; margin-bottom: 12px; border: 1px solid #333; }
         .msg { font-size: 14px; margin-bottom: 8px; border-bottom: 1px solid #222; padding-bottom: 5px; }
         .msg b { color: #4facfe; }
@@ -93,11 +86,9 @@
         #chat-input { flex: 1; padding: 12px; border-radius: 10px; border: none; background: #222; color: white; }
         #send-btn { padding: 10px 20px; background: #f9d423; border: none; border-radius: 10px; font-weight: bold; cursor: pointer; color: black; }
 
-        /* Leaderboard */
         .leader-item { display: flex; justify-content: space-between; padding: 12px; background: rgba(255,255,255,0.05); margin-bottom: 8px; border-radius: 10px; }
         .rank-1 { background: linear-gradient(90deg, #ffd700, #ff8c00); color: black; font-weight: bold; }
 
-        /* Overlay */
         #name-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             background: #121212; z-index: 5000;
@@ -106,14 +97,12 @@
         #name-input { padding: 18px; font-size: 20px; border-radius: 15px; border: 2px solid #f9d423; width: 280px; text-align: center; background: #1a1a1a; color: white; }
         #start-btn { margin-top: 25px; padding: 18px 50px; background: #f9d423; border: none; border-radius: 15px; font-weight: bold; cursor: pointer; }
 
-        /* Cookie */
         #cookie-container { position: relative; width: min(88vw, 360px); height: min(88vw, 360px); display: flex; justify-content: center; align-items: center; cursor: pointer; }
         #main-cookie { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 30px 60px rgba(0,0,0,0.65)); transition: transform 0.12s; }
         .controls { position: absolute; bottom: 8%; display: flex; flex-direction: column; gap: 20px; align-items: center; z-index: 200; width: 100%; }
         .ui-btn { width: clamp(150px, 42vw, 180px); cursor: pointer; transition: 0.4s; border-radius: 30px; }
         .cooldown { opacity: 0.3; filter: grayscale(1); cursor: not-allowed; pointer-events: none; }
 
-        /* Store */
         #store-ui {
             position: fixed; top: 0; right: -100%; 
             width: 100%; height: 100%;
@@ -127,7 +116,6 @@
         .store-item.disabled { opacity: 0.2; filter: grayscale(1); cursor: not-allowed; }
         .item-icon { width: 65px; height: 65px; object-fit: contain; }
 
-        /* Anim */
         .particle { position: absolute; pointer-events: none; animation: crumble 1.5s forwards; }
         @keyframes crumble { 100% { transform: translate(var(--tx), var(--ty)) rotate(720deg); opacity: 0; } }
         .fade-out { opacity: 0; transform: scale(0.1) !important; }
@@ -225,8 +213,11 @@
 
     function startGame() {
         const input = document.getElementById('name-input').value.trim();
-        // İsim kontrolünü kaldırdım veya 1 karaktere indirdim ki hata vermesin
-        if(input.length < 1) return alert("Please enter a name!");
+        // Hata buradaydı, kontrolü tamamen esnettim. 
+        if(input === "") {
+            alert("Lütfen bir isim yazın!");
+            return;
+        }
         playerName = input;
         localStorage.setItem('player_name', playerName);
         document.getElementById('name-overlay').style.display = 'none';
